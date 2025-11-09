@@ -5,7 +5,6 @@
 #ifndef GRAPH_GEN_H
 #define GRAPH_GEN_H
 
-#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -34,4 +33,22 @@ extern void delete_graph(Graph& graph, int n);
 
 // Display adj list
 extern void print_list(const std::vector<std::vector<int>> &list, const char *name);
+
+/* Preparation algorithm for BFSD
+ * Representations:
+ *      * 0 - matrix
+ *      * 1 - list
+ * Methods:
+ *      * 0 - BFS
+ *      * 1 - DFS
+ */
+extern void prep(const Graph& graph, int vertex, bool representation);
+
+/**
+ * Implementation of a breadth-first search algorithm for finding distances
+ * @param vertex Start vertex
+ * @param graph Currently being examined graph
+ * @param dist Vector of distances to all vertices from the original one.
+ */
+extern void BFSD(int vertex, const Graph& graph, std::vector<int>& dist);
 #endif //GRAPH_GEN_H

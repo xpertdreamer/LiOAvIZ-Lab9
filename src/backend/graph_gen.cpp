@@ -116,3 +116,37 @@ void print_list(const std::vector<std::vector<int> > &list, const char* name) {
         std::cout << std::endl;
     }
 }
+
+void prep(const Graph& graph, const int vertex, const bool representation) {
+    const int n = graph.n;
+    std::vector distances(n, -1);
+
+    representation == true ? BFSD(vertex, graph, distances) : (void)0;
+
+    std::cout << "Distances vector:" << std::endl;
+    for (int i = 0; i < n; i++) {
+        std::cout << distances[i] << " ";
+    }
+
+    std::cout << std::endl;
+}
+
+
+void BFSD(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::queue<int> q;
+    q.push(vertex);
+    dist[vertex] = 0;
+    std::cout << "Vertex traversal order: " << std::endl;
+    while (!q.empty()) {
+        const int current_vertex = q.front();
+        q.pop();
+        std::cout << current_vertex << " ";
+        for (int i = 1; i < graph.n; i++) {
+            if (graph.adj_matrix[current_vertex][i] == 1 && dist[i] == -1) {
+                q.push(i);
+                dist[i] = dist[current_vertex] + 1;
+            }
+        }
+    }
+    std::cout << std::endl;
+}

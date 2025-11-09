@@ -14,8 +14,8 @@
 #include <stdio.h>
 #endif
 
-#include "../include/adapters/console_adapter.h"
-#include "../include/backend/graph_gen.h"
+#include "../../include/adapters/console_adapter.h"
+#include "../../include/backend/graph_gen.h"
 
 #include <filesystem>
 #include <fstream>
@@ -161,8 +161,14 @@ void GraphConsoleAdapter::register_graph_commands() {
     );
 
     console.register_command("smile",
-        [this](const std::vector<std::string>& args) { cmd_smile(); },
+        [this](const std::vector<std::string>&) { cmd_smile(); },
         "SMILE!!!!!"
+    );
+
+    console.register_command("BFSD",
+        [this](const std::vector<std::string>& args) { cmd_traversal(args); },
+        "Traverse graph BFS",
+        {"start vertex", "--representation (m || l)"}
     );
 }
 
@@ -203,9 +209,9 @@ void GraphConsoleAdapter::cmd_print() const {
         return;
     }
 
-    std::cout << "=== GRAPH 3 ===" << std::endl;
-    print_matrix(graph->adj_matrix, graph->n, graph->n, "Adjacency Matrix 3");
-    print_list(graph->adj_list, "Adjacency List 3");
+    std::cout << "=== GRAPH ===" << std::endl;
+    print_matrix(graph->adj_matrix, graph->n, graph->n, "Adjacency Matrix");
+    print_list(graph->adj_list, "Adjacency List");
 }
 
 void GraphConsoleAdapter::cmd_clear() {
@@ -232,4 +238,29 @@ void GraphConsoleAdapter::cmd_help(const std::vector<std::string>& args) {
 
 void GraphConsoleAdapter::cmd_history() {
     console.show_history();
+}
+
+void GraphConsoleAdapter::cmd_traversal(const std::vector<std::string> &args) const {
+    if (!graphs_created) {
+        std::cout << "No graphs created. Use 'create' command first." << std::endl;
+        return;
+    }
+
+    try {
+        const int v = args.empty() ? 0 : std::stoi(args[0]);
+        const std::string rep = args.size() > 1 ? args[1] : "--m";
+
+        if (v >= graph->n || v < 0) {
+            std::cout << "Invalid number of vertices." << std::endl;
+            return;
+        }
+        if (rep != "--l" && rep != "--m") {
+            std::cout << "Invalid representation." << std::endl;
+            return;
+        }
+
+        rep == "--m" ? prep(*graph, v, true) : (void)0;
+    } catch (const std::exception& e) {
+        std::cout << "Error BFSD: " << e.what() << std::endl;
+    }
 }

@@ -25,12 +25,10 @@ add_subdirectory(src)
 
 add_executable(LiOAvIZ_Lab9
         src/main.cpp
-        include/backend/graph_gen.h
 )
 
 target_link_libraries(LiOAvIZ_Lab9 PRIVATE
         lab9_lib
-        Queue
 )
 
 target_include_directories(LiOAvIZ_Lab9 PRIVATE ${CMAKE_SOURCE_DIR}/include)

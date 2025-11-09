@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "../core/console.h"
-#include "backend/graph_gen.h"
+#include "../backend/graph_gen.h"
 
 class GraphConsoleAdapter {
     public:
@@ -37,7 +37,6 @@ class GraphConsoleAdapter {
     void cmd_help(const std::vector<std::string>& args);
     void cmd_history();
     void cmd_traversal(const std::vector<std::string>& args) const;
-    void cmd_compare(const std::vector<std::string>& args) const;
 
     static void cmd_smile();
 };
