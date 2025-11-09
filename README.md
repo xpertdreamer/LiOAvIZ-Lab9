@@ -23,13 +23,21 @@ Include the header and initialize in your `main.cpp`:
 #include "adapters/console_adapter.h"
 
 int main() {
-    // With custom config paths
-    GraphConsoleAdapter adapter("config/console.conf", "config/aliases.conf");
+    try {
+        // With custom config paths
+        GraphConsoleAdapter adapter("config/console.conf", "config/aliases.conf");
     
-    // Or with auto-detected configs
-    // GraphConsoleAdapter adapter;
-    
-    adapter.run();
+        // Or with auto-detected configs
+        // GraphConsoleAdapter adapter;
+
+        adapter.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    } catch(...) {
+        std::cerr << "Unknown exception" << std::endl;
+        return EXIT_FAILURE;
+    }
     return 0;
 }
 ```
@@ -192,13 +200,21 @@ target_include_directories(your_app PRIVATE ${CMAKE_SOURCE_DIR}/include)
 #include "adapters/console_adapter.h"
 
 int main() {
-    // С указанием путей к конфигурации
-    GraphConsoleAdapter adapter("config/console.conf", "config/aliases.conf");
+    try {
+        // С указанием путей к конфигурации
+        GraphConsoleAdapter adapter("config/console.conf", "config/aliases.conf");
     
-    // Или с автоматическим поиском конфигов
-    // GraphConsoleAdapter adapter;
-    
-    adapter.run();
+        // Или с автоматическим поиском конфигов
+        // GraphConsoleAdapter adapter;
+
+        adapter.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    } catch(...) {
+        std::cerr << "Unknown exception" << std::endl;
+        return EXIT_FAILURE;
+    }
     return 0;
 }
 ```
