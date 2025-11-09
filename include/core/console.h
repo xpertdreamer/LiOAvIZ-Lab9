@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <vector>
 #include <iostream>
+#include <limits>
 #include <ranges>
 #include <sstream>
 
@@ -84,6 +85,11 @@ public:
     void stop() {
         running = false;
         std::cout << get_color("success") << config.exit_msg << reset_color() << std::endl;
+        if (config.press_to_exit) {
+            std::cout << "Press Enter to continue...";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
 
     static std::vector<std::string> tokenize(const std::string& input) {

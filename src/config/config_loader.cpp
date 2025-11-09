@@ -120,6 +120,7 @@ ConsoleConfig ConfigLoader::load_from_file(const std::string &filename) {
             else if (key == "show_help_on_unknown") config.show_help_on_unknown = parse_bool(value);
             else if (key == "clear_screen_on_start") config.clear_screen_on_start = parse_bool(value);
             else if (key == "history_size") config.history_size = std::stoi(value);
+            else if (key == "press_to_exit") config.press_to_exit = parse_bool(value);
         }
     }
 
@@ -140,7 +141,8 @@ bool ConfigLoader::save_config(const ConsoleConfig &config, const std::string &f
     file << "enable_colors = " << (config.colors_enabled ? "true" : "false") << "\n";
     file << "show_help_on_unknown = " << (config.show_help_on_unknown ? "true" : "false") << "\n";
     file << "clear_screen_on_start = " << (config.clear_screen_on_start ? "true" : "false") << "\n";
-    file << "history_size = " << config.history_size << "\n\n";
+    file << "history_size = " << config.history_size << "\n";
+    file << "press_to_exit = " << config.press_to_exit << "\n\n";
 
     for (const auto& cmd : config.commands) {
         file << "[command]\n";

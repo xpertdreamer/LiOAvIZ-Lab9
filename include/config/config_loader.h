@@ -32,6 +32,7 @@ struct ConsoleConfig {
     bool show_help_on_unknown = true;
     bool clear_screen_on_start = false;
     int history_size = 100;
+    bool press_to_exit = true;
 
     std::unordered_map<std::string, std::string> colors;
     std::vector<CommandConfig> commands;
