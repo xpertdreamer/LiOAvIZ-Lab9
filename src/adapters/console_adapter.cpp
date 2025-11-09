@@ -280,40 +280,50 @@ void GraphConsoleAdapter::cmd_traversal(const std::vector<std::string> &args) co
 }
 
 void GraphConsoleAdapter::cmd_compare(const std::vector<std::string>& args) const {
+    struct nullbuf : std::streambuf {
+        int overflow(int c) override {return c;}
+    };
+
     if (!graphs_created) {
         std::cout << "No graphs created. Use 'create' command first." << std::endl;
         return;
     }
 
     try {
+        nullbuf nb;
+        std::ostream devnull(&nb);
         const int v = args.empty() ? 0 : std::stoi(args[0]);
         if (v >= graph->n || v < 0) {
             std::cout << "Invalid number of vertex" << std::endl;
             return;
         }
 
+        std::streambuf* old = std::cout.rdbuf();
+        std::cout.rdbuf(devnull.rdbuf());
+        auto t1 = prep(*graph, v, false, false);
+        auto t2 = prep(*graph, v, false, true);
+        auto t3 = prep(*graph, v, true, false);
+        auto t4 = prep(*graph, v, true, true);
+        std::cout.rdbuf(old);
+
         std::cout << "===Matrix BFS===" << std::endl;
-        auto timeMicro = prep(*graph, v, false, false);
-        double timeSec = static_cast<double>(timeMicro) / 1000000.0;
-        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        double timeSec = static_cast<double>(t1) / 1000000.0;
+        std::cout << "Time: " << t1 << " ms, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
 
         std::cout << "===Matrix DFS===" << std::endl;
-        timeMicro = prep(*graph, v, false, true);
-        timeSec = static_cast<double>(timeMicro) / 1000000.0;
-        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        timeSec = static_cast<double>(t2) / 1000000.0;
+        std::cout << "Time: " << t2 << " ms, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
 
         std::cout << "===List BFS===" << std::endl;
-        timeMicro = prep(*graph, v, true, false);
-        timeSec = static_cast<double>(timeMicro) / 1000000.0;
-        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        timeSec = static_cast<double>(t3) / 1000000.0;
+        std::cout << "Time: " << t3 << " ms, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
 
         std::cout << "===List DFS===" << std::endl;
-        timeMicro = prep(*graph, v, true, true);
-        timeSec = static_cast<double>(timeMicro) / 1000000.0;
-        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        timeSec = static_cast<double>(t4) / 1000000.0;
+        std::cout << "Time: " << t4 << " ms, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
     } catch (const std::exception& e) {
         std::cout << "Error traversal: " << e.what() << std::endl;
