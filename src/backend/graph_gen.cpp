@@ -126,7 +126,7 @@ void prep(const Graph& graph, const int vertex, const bool representation, const
             method == false ? BFSD(vertex, graph, distances) : DFSD(vertex, graph, distances);
             break;
         case true:
-            method == false ? BFSD_list(vertex, graph, distances) : (void)0;
+            method == false ? BFSD_list(vertex, graph, distances) : DFSD_list(vertex, graph, distances);
             break;
     }
 
@@ -204,3 +204,24 @@ void DFSD(const int vertex, const Graph &graph, std::vector<int> &dist) {
     std::cout << std::endl;
 }
 
+void DFSD_list(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::stack<int> stack;
+
+    dist[vertex] = 0;
+    stack.push(vertex);
+
+    while (!stack.empty()) {
+        const int current = stack.top();
+        stack.pop();
+        std::cout << current << " ";
+
+        for (auto it = graph.adj_list[current].rbegin(); it != graph.adj_list[current].rend(); ++it) {
+            if (const int neigh = *it; dist[neigh] == -1) {
+                dist[neigh] = dist[current] + 1;
+                stack.push(neigh);
+            }
+        }
+    }
+
+    std::cout << std::endl;
+}

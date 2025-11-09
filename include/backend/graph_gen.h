@@ -68,4 +68,11 @@ extern void BFSD_list(int vertex, const Graph& graph, std::vector<int>& dist);
  */
 extern void DFSD(int vertex, const Graph& graph, std::vector<int>& dist);
 
+/**
+ * Implementation of a depth-first search algorithm for finding distances for adjacency list
+ * @param vertex Start vertex
+ * @param graph Currently being examined graph
+ * @param dist Vector of distances to all vertices from the original one
+ */
+extern void DFSD_list(int vertex, const Graph& graph, std::vector<int>& dist);
 #endif //GRAPH_GEN_H
