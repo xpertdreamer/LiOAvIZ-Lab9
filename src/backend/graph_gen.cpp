@@ -117,10 +117,11 @@ void print_list(const std::vector<std::vector<int> > &list, const char* name) {
     }
 }
 
-void prep(const Graph& graph, const int vertex, const bool representation, const bool method) {
+long long prep(const Graph& graph, const int vertex, const bool representation, const bool method) {
     const int n = graph.n;
     std::vector distances(n, -1);
 
+    const auto start = std::chrono::high_resolution_clock::now();
     switch (representation) {
         case false:
             method == false ? BFSD(vertex, graph, distances) : DFSD(vertex, graph, distances);
@@ -134,8 +135,11 @@ void prep(const Graph& graph, const int vertex, const bool representation, const
     for (int i = 0; i < n; i++) {
         std::cout << distances[i] << " ";
     }
+    const auto end = std::chrono::high_resolution_clock::now();
 
     std::cout << std::endl;
+
+    return std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 }
 
 

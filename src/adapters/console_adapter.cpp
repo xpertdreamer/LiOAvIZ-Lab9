@@ -170,6 +170,12 @@ void GraphConsoleAdapter::register_graph_commands() {
         "Traverse graph",
         {"start vertex", "--representation (m || l)", "--method (bfs || dfs)"}
     );
+
+    console.register_command("compare",
+        [this](const std::vector<std::string>& args) { cmd_compare(args); },
+        "Compare methods of traversal",
+        {"start_vertex"}
+    );
 }
 
 void GraphConsoleAdapter::cmd_create(const std::vector<std::string>& args) {
@@ -270,5 +276,46 @@ void GraphConsoleAdapter::cmd_traversal(const std::vector<std::string> &args) co
         prep(*graph, v, representation, method);
     } catch (const std::exception& e) {
         std::cout << "Error BFSD: " << e.what() << std::endl;
+    }
+}
+
+void GraphConsoleAdapter::cmd_compare(const std::vector<std::string>& args) const {
+    if (!graphs_created) {
+        std::cout << "No graphs created. Use 'create' command first." << std::endl;
+        return;
+    }
+
+    try {
+        const int v = args.empty() ? 0 : std::stoi(args[0]);
+        if (v >= graph->n || v < 0) {
+            std::cout << "Invalid number of vertex" << std::endl;
+            return;
+        }
+
+        std::cout << "===Matrix BFS===" << std::endl;
+        auto timeMicro = prep(*graph, v, false, false);
+        double timeSec = static_cast<double>(timeMicro) / 1000000.0;
+        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "===Matrix DFS===" << std::endl;
+        timeMicro = prep(*graph, v, false, true);
+        timeSec = static_cast<double>(timeMicro) / 1000000.0;
+        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "===List BFS===" << std::endl;
+        timeMicro = prep(*graph, v, true, false);
+        timeSec = static_cast<double>(timeMicro) / 1000000.0;
+        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "===List DFS===" << std::endl;
+        timeMicro = prep(*graph, v, true, true);
+        timeSec = static_cast<double>(timeMicro) / 1000000.0;
+        std::cout << "Time: " << timeMicro << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << std::endl;
+    } catch (const std::exception& e) {
+        std::cout << "Error traversal: " << e.what() << std::endl;
     }
 }

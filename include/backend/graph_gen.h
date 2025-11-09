@@ -42,7 +42,7 @@ extern void print_list(const std::vector<std::vector<int>> &list, const char *na
  *      * 0 - BFS
  *      * 1 - DFS
  */
-extern void prep(const Graph& graph, int vertex, bool representation, bool method);
+long long prep(const Graph& graph, int vertex, bool representation, bool method);
 
 /**
  * Implementation of a breadth-first search algorithm for finding distances
