@@ -259,7 +259,7 @@ void GraphConsoleAdapter::cmd_traversal(const std::vector<std::string> &args) co
             return;
         }
 
-        rep == "--m" ? prep(*graph, v, true) : (void)0;
+        rep == "--m" ? prep(*graph, v, true) : prep(*graph, v, false);
     } catch (const std::exception& e) {
         std::cout << "Error BFSD: " << e.what() << std::endl;
     }

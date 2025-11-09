@@ -121,7 +121,7 @@ void prep(const Graph& graph, const int vertex, const bool representation) {
     const int n = graph.n;
     std::vector distances(n, -1);
 
-    representation == true ? BFSD(vertex, graph, distances) : (void)0;
+    representation == true ? BFSD(vertex, graph, distances) : BFSD_list(vertex, graph, distances);
 
     std::cout << "Distances vector:" << std::endl;
     for (int i = 0; i < n; i++) {
@@ -148,5 +148,26 @@ void BFSD(const int vertex, const Graph &graph, std::vector<int> &dist) {
             }
         }
     }
+    std::cout << std::endl;
+}
+
+void BFSD_list(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::queue<int> q;
+    q.push(vertex);
+    dist[vertex] = 0;
+
+    std::cout << "Vertex traversal order: " << std::endl;
+    while (!q.empty()) {
+        const int current_vertex = q.front();
+        q.pop();
+        std::cout << current_vertex << " ";
+        for (const int neigh : graph.adj_list[current_vertex]) {
+            if (dist[neigh] == -1) {
+                q.push(neigh);
+                dist[neigh] = dist[current_vertex] + 1;
+            }
+        }
+    }
+
     std::cout << std::endl;
 }

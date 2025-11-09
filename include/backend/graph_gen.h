@@ -48,7 +48,15 @@ extern void prep(const Graph& graph, int vertex, bool representation);
  * Implementation of a breadth-first search algorithm for finding distances
  * @param vertex Start vertex
  * @param graph Currently being examined graph
- * @param dist Vector of distances to all vertices from the original one.
+ * @param dist Vector of distances to all vertices from the original one
  */
 extern void BFSD(int vertex, const Graph& graph, std::vector<int>& dist);
+
+/**
+ * Implementation of a breadth-first search algorithm for finding distances from adjacency list
+ * @param vertex Start vertex
+ * @param graph Currently being examined graph
+ * @param dist Vector of distances to all vertices from the original one
+ */
+extern void BFSD_list(int vertex, const Graph& graph, std::vector<int>& dist);
 #endif //GRAPH_GEN_H
