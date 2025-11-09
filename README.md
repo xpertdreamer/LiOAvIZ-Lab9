@@ -137,7 +137,8 @@ exit_msg = "Goodbye!"
 unknown_msg = "Unknown command"
 clear_screen_on_start = true
 history_size = 100
-colors_enabled = true
+press_to_exit = true
+enable_colors = true
 error_color = red
 success_color = green
 warning_color = yellow
@@ -309,12 +310,13 @@ std::cout << console.get_color("success") << "Операция завершен�
 **config/console.conf**:
 ```ini
 prompt = "myapp> "
-welcome_msg = "Консоль моего приложения"
-exit_msg = "До свидания!"
-unknown_msg = "Неизвестная команда"
+welcome_msg = "My Application Console"
+exit_msg = "Goodbye!"
+unknown_msg = "Unknown command"
 clear_screen_on_start = true
 history_size = 100
-colors_enabled = true
+press_to_exit = true
+enable_colors = true
 error_color = red
 success_color = green
 warning_color = yellow
