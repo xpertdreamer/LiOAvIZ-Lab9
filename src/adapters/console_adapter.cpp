@@ -165,10 +165,10 @@ void GraphConsoleAdapter::register_graph_commands() {
         "SMILE!!!!!"
     );
 
-    console.register_command("BFSD",
+    console.register_command("traversal",
         [this](const std::vector<std::string>& args) { cmd_traversal(args); },
-        "Traverse graph BFS",
-        {"start vertex", "--representation (m || l)"}
+        "Traverse graph",
+        {"start vertex", "--representation (m || l)", "--method (bfs || dfs)"}
     );
 }
 
@@ -249,6 +249,7 @@ void GraphConsoleAdapter::cmd_traversal(const std::vector<std::string> &args) co
     try {
         const int v = args.empty() ? 0 : std::stoi(args[0]);
         const std::string rep = args.size() > 1 ? args[1] : "--m";
+        const std::string met = args.size() > 2 ? args[2] : "--bfs";
 
         if (v >= graph->n || v < 0) {
             std::cout << "Invalid number of vertices." << std::endl;
@@ -258,8 +259,15 @@ void GraphConsoleAdapter::cmd_traversal(const std::vector<std::string> &args) co
             std::cout << "Invalid representation." << std::endl;
             return;
         }
+        if (met != "--bfs" && met != "--dfs") {
+            std::cout << "Invalid method." << std::endl;
+            return;
+        }
 
-        rep == "--m" ? prep(*graph, v, true) : prep(*graph, v, false);
+        const bool representation = rep != "--m";
+        const bool method = met != "--bfs";
+
+        prep(*graph, v, representation, method);
     } catch (const std::exception& e) {
         std::cout << "Error BFSD: " << e.what() << std::endl;
     }

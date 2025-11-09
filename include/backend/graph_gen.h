@@ -42,7 +42,7 @@ extern void print_list(const std::vector<std::vector<int>> &list, const char *na
  *      * 0 - BFS
  *      * 1 - DFS
  */
-extern void prep(const Graph& graph, int vertex, bool representation);
+extern void prep(const Graph& graph, int vertex, bool representation, bool method);
 
 /**
  * Implementation of a breadth-first search algorithm for finding distances
@@ -59,4 +59,13 @@ extern void BFSD(int vertex, const Graph& graph, std::vector<int>& dist);
  * @param dist Vector of distances to all vertices from the original one
  */
 extern void BFSD_list(int vertex, const Graph& graph, std::vector<int>& dist);
+
+/**
+ * Implementation of a depth-first search algorithm for finding distances
+ * @param vertex Start vertex
+ * @param graph Currently being examined graph
+ * @param dist Vector of distances to all vertices from the original one
+ */
+extern void DFSD(int vertex, const Graph& graph, std::vector<int>& dist);
+
 #endif //GRAPH_GEN_H

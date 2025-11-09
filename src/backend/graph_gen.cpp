@@ -4,12 +4,12 @@
 
 #include <chrono>
 #include <queue>
+#include <stack>
 
 Graph create_graph(const int n, const double edgeProb, const double loopProb, const unsigned int seed) {
     Graph graph;
     graph.n = n;
 
-    // Формируем матрицу -> выводим -> все подряд
     // Matrix memory allocating
     graph.adj_matrix = new int*[n];
     for (int i = 0; i < n; i++) {
@@ -117,11 +117,18 @@ void print_list(const std::vector<std::vector<int> > &list, const char* name) {
     }
 }
 
-void prep(const Graph& graph, const int vertex, const bool representation) {
+void prep(const Graph& graph, const int vertex, const bool representation, const bool method) {
     const int n = graph.n;
     std::vector distances(n, -1);
 
-    representation == true ? BFSD(vertex, graph, distances) : BFSD_list(vertex, graph, distances);
+    switch (representation) {
+        case false:
+            method == false ? BFSD(vertex, graph, distances) : DFSD(vertex, graph, distances);
+            break;
+        case true:
+            method == false ? BFSD_list(vertex, graph, distances) : (void)0;
+            break;
+    }
 
     std::cout << "Distances vector:" << std::endl;
     for (int i = 0; i < n; i++) {
@@ -137,6 +144,7 @@ void BFSD(const int vertex, const Graph &graph, std::vector<int> &dist) {
     q.push(vertex);
     dist[vertex] = 0;
     std::cout << "Vertex traversal order: " << std::endl;
+
     while (!q.empty()) {
         const int current_vertex = q.front();
         q.pop();
@@ -148,6 +156,7 @@ void BFSD(const int vertex, const Graph &graph, std::vector<int> &dist) {
             }
         }
     }
+
     std::cout << std::endl;
 }
 
@@ -171,3 +180,27 @@ void BFSD_list(const int vertex, const Graph &graph, std::vector<int> &dist) {
 
     std::cout << std::endl;
 }
+
+void DFSD(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::stack<int> stack;
+
+    dist[vertex] = 0;
+    stack.push(vertex);
+
+    while (!stack.empty()) {
+        const int current = stack.top();
+        stack.pop();
+
+        std::cout << current << " ";
+
+        for (int i = graph.n - 1; i >= 0; i--) {
+            if (graph.adj_matrix[current][i] == 1 && dist[i] == -1) {
+                dist[i] = dist[current] + 1;
+                stack.push(i);
+            }
+        }
+    }
+
+    std::cout << std::endl;
+}
+
