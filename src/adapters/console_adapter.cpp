@@ -292,7 +292,14 @@ void GraphConsoleAdapter::cmd_compare(const std::vector<std::string>& args) cons
     try {
         nullbuf nb;
         std::ostream devnull(&nb);
-        const int v = args.empty() ? 0 : std::stoi(args[0]);
+        // const int v = args.empty() ? 0 : std::stoi(args[0]);
+        if (args.empty()) {
+            compare(*graph);
+            return;
+        }
+
+        const int v = std::stoi(args[0]);
+
         if (v >= graph->n || v < 0) {
             std::cout << "Invalid number of vertex" << std::endl;
             return;
@@ -308,22 +315,22 @@ void GraphConsoleAdapter::cmd_compare(const std::vector<std::string>& args) cons
 
         std::cout << "===Matrix BFS===" << std::endl;
         double timeSec = static_cast<double>(t1) / 1000000.0;
-        std::cout << "Time: " << t1 << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << "Time: " << t1 << " us, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
 
         std::cout << "===Matrix DFS===" << std::endl;
         timeSec = static_cast<double>(t2) / 1000000.0;
-        std::cout << "Time: " << t2 << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << "Time: " << t2 << " us, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
 
         std::cout << "===List BFS===" << std::endl;
         timeSec = static_cast<double>(t3) / 1000000.0;
-        std::cout << "Time: " << t3 << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << "Time: " << t3 << " us, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
 
         std::cout << "===List DFS===" << std::endl;
         timeSec = static_cast<double>(t4) / 1000000.0;
-        std::cout << "Time: " << t4 << " ms, or " << timeSec << " s" << std::endl;
+        std::cout << "Time: " << t4 << " us, or " << timeSec << " s" << std::endl;
         std::cout << std::endl;
     } catch (const std::exception& e) {
         std::cout << "Error traversal: " << e.what() << std::endl;

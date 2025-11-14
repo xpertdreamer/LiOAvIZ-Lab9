@@ -229,3 +229,120 @@ void DFSD_list(const int vertex, const Graph &graph, std::vector<int> &dist) {
 
     std::cout << std::endl;
 }
+
+
+void BFSD_no_print(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::queue<int> q;
+    q.push(vertex);
+    dist[vertex] = 0;
+
+    while (!q.empty()) {
+        const int current_vertex = q.front();
+        q.pop();
+        for (int i = 0; i < graph.n; i++) {
+            if (graph.adj_matrix[current_vertex][i] == 1 && dist[i] == -1) {
+                q.push(i);
+                dist[i] = dist[current_vertex] + 1;
+            }
+        }
+    }
+}
+
+void DFSD_no_print(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::stack<int> stack;
+    dist[vertex] = 0;
+    stack.push(vertex);
+
+    while (!stack.empty()) {
+        const int current = stack.top();
+        stack.pop();
+        for (int i = graph.n - 1; i >= 0; i--) {
+            if (graph.adj_matrix[current][i] == 1 && dist[i] == -1) {
+                dist[i] = dist[current] + 1;
+                stack.push(i);
+            }
+        }
+    }
+}
+
+void BFSD_list_no_print(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::queue<int> q;
+    q.push(vertex);
+    dist[vertex] = 0;
+
+    while (!q.empty()) {
+        const int current_vertex = q.front();
+        q.pop();
+        for (const int neigh : graph.adj_list[current_vertex]) {
+            if (dist[neigh] == -1) {
+                q.push(neigh);
+                dist[neigh] = dist[current_vertex] + 1;
+            }
+        }
+    }
+}
+
+void DFSD_list_no_print(const int vertex, const Graph &graph, std::vector<int> &dist) {
+    std::stack<int> stack;
+    dist[vertex] = 0;
+    stack.push(vertex);
+
+    while (!stack.empty()) {
+        const int current = stack.top();
+        stack.pop();
+        for (auto it = graph.adj_list[current].rbegin(); it != graph.adj_list[current].rend(); ++it) {
+            if (const int neigh = *it; dist[neigh] == -1) {
+                dist[neigh] = dist[current] + 1;
+                stack.push(neigh);
+            }
+        }
+    }
+}
+
+void compare(const Graph &graph) {
+    const int n = graph.n;
+
+    auto run_method = [&](const std::string& name, auto search_func) {
+        std::vector<std::vector<int>> dist_matrix(n, std::vector<int>(n, -1));
+        const auto start = std::chrono::high_resolution_clock::now();
+
+        for (int i = 0; i < n; i++) {
+            std::vector<int> dist(n, -1);
+            search_func(i, graph, dist);
+            dist_matrix[i] = dist;
+        }
+
+        const auto end = std::chrono::high_resolution_clock::now();
+        const auto time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        const double timeInSeconds = static_cast<double>(time) / 1000000.0;
+
+        std::cout << name << ": " << time << " us = " << timeInSeconds << " s"  << std::endl;
+        std::cout << "    ";
+        for (int j = 0; j < n; j++) {
+            std::cout << std::setw(3) << j << " ";
+        }
+        std::cout << std::endl;
+
+
+        std::cout << "   +";
+        for (int j = 0; j < n; j++) {
+            std::cout << "----";
+        }
+        std::cout << std::endl;
+
+
+        for (int i = 0; i < n; i++) {
+            std::cout << std::setw(2) << i << " |";
+            for (int j = 0; j < n; j++) {
+                std::cout << std::setw(3) <<dist_matrix[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "*" <<std::setfill('-') << std::setw(n * 4 + 6) << "*" << std::setfill(' ') << std::endl;
+    };
+
+    run_method("DFSD", DFSD_no_print);
+    run_method("DFSD_list", DFSD_list_no_print);
+    run_method("BFSD", BFSD_no_print);
+    run_method("BFSD_list", BFSD_list_no_print);
+}

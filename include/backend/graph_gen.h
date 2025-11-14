@@ -75,4 +75,7 @@ extern void DFSD(int vertex, const Graph& graph, std::vector<int>& dist);
  * @param dist Vector of distances to all vertices from the original one
  */
 extern void DFSD_list(int vertex, const Graph& graph, std::vector<int>& dist);
+
+// Method execution time comparison function
+extern void compare(const Graph& graph);
 #endif //GRAPH_GEN_H
